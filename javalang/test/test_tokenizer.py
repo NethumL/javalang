@@ -3,7 +3,6 @@ from .. import tokenizer
 
 
 class TestTokenizer(unittest.TestCase):
-
     def test_tokenizer_annotation(self):
         # Given
         code = "    @Override"
@@ -20,9 +19,11 @@ class TestTokenizer(unittest.TestCase):
 
     def test_tokenizer_javadoc(self):
         # Given
-        code = "/**\n" \
-               " * See {@link BlockTokenSecretManager#setKeys(ExportedBlockKeys)}\n" \
-               " */"
+        code = (
+            "/**\n"
+            " * See {@link BlockTokenSecretManager#setKeys(ExportedBlockKeys)}\n"
+            " */"
+        )
 
         # When
         tokens = list(tokenizer.tokenize(code))
@@ -120,7 +121,6 @@ public int function() {
         self.assertEqual(len(tokens), 14)
 
     def test_string_delim_within_comment(self):
-
         # Given
         code = "* Returns 0 if it can't find the end \
                 if (*itr == '\r') { \
@@ -188,5 +188,6 @@ int k;
         self.assertEqual(token[0].position.column, 1)
         self.assertEqual(token[3].position.column, 1)
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     unittest.main()
