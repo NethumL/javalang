@@ -1,15 +1,19 @@
-class LookAheadIterator(object):
-    def __init__(self, iterable):
+from typing import Generic, Iterable, TypeVar, List, Optional
+
+T = TypeVar("T")
+
+class LookAheadIterator(Generic[T]):
+    def __init__(self, iterable: Iterable[T]):
         self.iterable = iter(iterable)
-        self.look_ahead = list()
-        self.markers = list()
-        self.default = None
-        self.value = None
+        self.look_ahead: List[T] = list()
+        self.markers: List[List[T]] = list()
+        self.default: Optional[T] = None
+        self.value: Optional[T] = None
 
     def __iter__(self):
         return self
 
-    def set_default(self, value):
+    def set_default(self, value: T):
         self.default = value
 
     def next(self):
@@ -66,7 +70,7 @@ class LookAheadIterator(object):
         """Push a marker on to the marker stack"""
         self.markers.append(list())
 
-    def pop_marker(self, reset):
+    def pop_marker(self, reset: bool):
         """Pop a marker off of the marker stack. If reset is True then the
         iterator will be returned to the state it was in before the
         corresponding call to push_marker().
@@ -87,20 +91,20 @@ class LookAheadIterator(object):
             pass
 
 
-class LookAheadListIterator(object):
-    def __init__(self, iterable):
+class LookAheadListIterator(Generic[T]):
+    def __init__(self, iterable: Iterable[T]):
         self.list = list(iterable)
 
         self.marker = 0
-        self.saved_markers = []
+        self.saved_markers: list[int] = []
 
-        self.default = None
-        self.value = None
+        self.default: Optional[T] = None
+        self.value: Optional[T] = None
 
     def __iter__(self):
         return self
 
-    def set_default(self, value):
+    def set_default(self, value: T):
         self.default = value
 
     def next(self):
@@ -149,7 +153,7 @@ class LookAheadListIterator(object):
         """Push a marker on to the marker stack"""
         self.saved_markers.append(self.marker)
 
-    def pop_marker(self, reset):
+    def pop_marker(self, reset: bool):
         """Pop a marker off of the marker stack. If reset is True then the
         iterator will be returned to the state it was in before the
         corresponding call to push_marker().
