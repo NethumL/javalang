@@ -28,6 +28,12 @@ class Node(object):
             value = values.pop(attr_name, None)
             setattr(self, attr_name, value)
 
+        if "position" in values:
+            self._position = values.pop("position")
+
+        if "end_position" in values:
+            self._end_position = values.pop("end_position")
+
         if values:
             raise ValueError("Extraneous arguments")
 
@@ -65,6 +71,11 @@ class Node(object):
     def position(self):
         if hasattr(self, "_position"):
             return self._position
+
+    @property
+    def end_position(self):
+        if hasattr(self, "_end_position"):
+            return self._end_position
 
 
 def walk_tree(root):

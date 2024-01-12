@@ -1,6 +1,7 @@
 import re
 import unicodedata
 from collections import namedtuple
+from typing import Generator, Optional
 
 import six
 
@@ -13,7 +14,7 @@ Position = namedtuple("Position", ["line", "column"])
 
 
 class JavaToken(object):
-    def __init__(self, value, position=None, javadoc=None):
+    def __init__(self, value, position: Optional[Position]=None, javadoc=None):
         self.value = value
         self.position = position
         self.javadoc = javadoc
@@ -34,6 +35,9 @@ class JavaToken(object):
 
     def __eq__(self, other):
         raise Exception("Direct comparison not allowed")
+
+    def get_end(self) -> Position:
+        return Position(self.position.line, self.position.column + len(self.value) - 1)
 
 
 class EndOfInput(JavaToken):
@@ -634,7 +638,7 @@ class JavaTokenizer(object):
         self.data = "".join(new_data)
         self.length = len(self.data)
 
-    def tokenize(self):
+    def tokenize(self) -> Generator[JavaToken, None, None]:
         self.reset()
 
         # Convert unicode escapes
