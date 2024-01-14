@@ -1944,12 +1944,17 @@ class Parser(object):
                 pass
             try:
                 with self.tokens:
-                    self.accept("(")
+                    open_bracket = self.accept("(")
                     cast_target = self.parse_type()
                     self.accept(")")
                     expression = self.parse_expression_3()
 
-                    return tree.Cast(type=cast_target, expression=expression)
+                    return tree.Cast(
+                        type=cast_target,
+                        expression=expression,
+                        position=open_bracket.position,
+                        end_position=self.last_accepted.get_end(),
+                    )
             except JavaSyntaxError:
                 pass
 
