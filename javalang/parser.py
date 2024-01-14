@@ -218,7 +218,11 @@ class Parser(object):
         operation = operands[0]
 
         for operator, operandr in zip(operators, operands[1:]):
-            operation = tree.BinaryOperation(operandl=operation)
+            operation = tree.BinaryOperation(
+                operandl=operation,
+                position=operation.position,
+                end_position=operandr.end_position,
+            )
             operation.operator = operator
             operation.operandr = operandr
 

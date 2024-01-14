@@ -126,6 +126,13 @@ class TestParser(unittest.TestCase):
         self.assertEqual(catch_clause.position, Position(1, 1))
         self.assertEqual(catch_clause.end_position, Position(1, 22))
 
+    def test_parse_binary_operation(self):
+        parser = get_parser("x + (y * z);")
+        binary_operation = parser.parse_expression()
+        self.assertIsInstance(binary_operation, tree.BinaryOperation)
+        self.assertEqual(binary_operation.position, Position(1, 1))
+        self.assertEqual(binary_operation.end_position, Position(1, 11))
+
 
 def get_parser(code: str) -> parser.Parser:
     return parser.Parser(tokenizer.tokenize(code))
