@@ -133,6 +133,11 @@ class TestParser(unittest.TestCase):
         self.assertEqual(binary_operation.position, Position(1, 1))
         self.assertEqual(binary_operation.end_position, Position(1, 11))
 
+        subop = binary_operation.operandr
+        self.assertIsInstance(subop, tree.BinaryOperation)
+        self.assertEqual(subop.position, Position(1, 5))
+        self.assertEqual(subop.end_position, Position(1, 11))
+
 
 def get_parser(code: str) -> parser.Parser:
     return parser.Parser(tokenizer.tokenize(code))
